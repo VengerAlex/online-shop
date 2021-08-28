@@ -53,6 +53,18 @@ h1,h2,h3,h4,h5,h6,p{
     transition: box-shadow 0.3s ease-in-out, transform  0.3s ease-in-out;
   }
 }
+.search-items{
+  position: relative;
+  img{
+    position: absolute;
+    margin-left: 20px;
+    top: -9px;
+  }
+}
+.drawer-box{
+  display: block;
+  margin: 0 auto;
+}
 .card-wrapper{
   flex-wrap: wrap;
 }
