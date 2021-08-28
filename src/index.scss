@@ -53,6 +53,9 @@ h1,h2,h3,h4,h5,h6,p{
     transition: box-shadow 0.3s ease-in-out, transform  0.3s ease-in-out;
   }
 }
+.card-wrapper{
+  flex-wrap: wrap;
+}
 .fav{
   cursor: pointer;
 }
