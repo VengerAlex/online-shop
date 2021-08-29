@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import EmptyCart from "./EmptyCart";
 
-const Drawer = ({onCloseCart, cartItems}) => {
+const Drawer = ({onCloseCart, cartItems, onRemove}) => {
     return (
         <div className="overlay">
             <div className="drawer">
@@ -16,10 +16,15 @@ const Drawer = ({onCloseCart, cartItems}) => {
                                 <p className='mb-5'>{el.name}</p>
                                 <b>{el.price}$</b>
                             </div>
-                            <img className='remove__btn ml-auto' src="/img/btn-remove.svg" alt="remove"/>
+                            <img
+                                onClick={() => onRemove(el.id)}
+                                className='remove__btn ml-auto'
+                                src="/img/btn-remove.svg"
+                                alt="remove"
+                            />
                         </div>
                     ))
-                    :   <EmptyCart />
+                    :   <EmptyCart onCloseCart={onCloseCart}/>
                     }
                 </div>
                 <div className="total-block">

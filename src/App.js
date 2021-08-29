@@ -43,13 +43,25 @@ const App = () => {
         setSearchValue(e.target.value)
     }
 
+    const onRemoveCart =  async  (id) => {
+        const res = await fetch(`https://612a905922bb490017893971.mockapi.io/cart/${id}`, {
+            method: 'DELETE',
+        });
+        setCartItems(prev => prev.filter((el) => el.id !== id))
+    }
+
+
     useEffect(() => {
         fetchDataToCart()
-    }, onAddToCart)
+    }, [ onAddToCart])
 
     return (
         <div className="wrapper clear">
-            {cartOpened && <Drawer cartItems={cartItems} onCloseCart={() => setCartOpened(false)}/>}
+            {cartOpened && <Drawer
+                onRemove={onRemoveCart}
+                cartItems={cartItems}
+                onCloseCart={() => setCartOpened(false)}
+            />}
             <Header onClickCart={() => setCartOpened(true)}/>
             <div className="content p-40">
                 <div className='d-flex justify-between align-center mb-40'>
