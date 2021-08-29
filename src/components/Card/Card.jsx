@@ -4,10 +4,15 @@ import styles from './Card.module.scss'
 
 const Card = ({price, imageURL, name, onPlus, onFavourite}) => {
     const [isAdded, setIsAdded] = useState(false);
+    const [isFavourite, setIsFavourite] = useState(false);
 
     const onClickPlus = () => {
         setIsAdded(!isAdded);
         onPlus({price, imageURL, name})
+    }
+    const onClickFavourite = () => {
+        onFavourite({price, imageURL, name})
+        setIsFavourite(!isFavourite)
     }
 
     return (
@@ -21,15 +26,20 @@ const Card = ({price, imageURL, name, onPlus, onFavourite}) => {
                     <b>{price}$</b>
                 </div>
                 <div className='d-flex'>
-                    <img onClick={onFavourite} className='mr-10 fav' src="/img/fav-after.svg" alt="#"/>
+                    <img
+                        onClick={onClickFavourite}
+                        className='mr-10 fav'
+                        src={`/img/${isFavourite ? 'fav-after.svg' : 'fav-before.svg'}`}
+                        alt="#"
+                    />
                     <button  className='card__btn'>
-                        <img onClick={onClickPlus}  src={`/img/${isAdded ? 'btn-checked' : 'add'}.svg`}alt="#"/>
+                        <img onClick={onClickPlus} src={`/img/${isAdded ? 'btn-checked' : 'add'}.svg`} alt="#"/>
                     </button>
                 </div>
-
             </div>
         </div>
     );
-};
+}
 
 export default Card;
+
