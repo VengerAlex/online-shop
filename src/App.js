@@ -1,7 +1,7 @@
 import Home from "./pages/Home";
 import Favourite from "./pages/Favourite";
 import Error from "./pages/Error";
-import { Switch, Route} from "react-router-dom";
+import {Switch, Route} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import Drawer from "./components/Drawer/Drawer";
 import Header from "./components/Header/Header";
@@ -12,20 +12,23 @@ const App = () => {
     const [cartItems, setCartItems] = useState([]);
     const [searchValue, setSearchValue] = useState('');
     const [favourites, setFavourites] = useState([]);
-
+    const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
-        fetchData()
         fetchDataToCart()
         fetchDataFavour()
+        fetchData()
     }, [])
 
 
     const fetchData = async () => {
+        setIsLoading(true)
+
         const res = await fetch('https://612a905922bb490017893971.mockapi.io/items');
         const data = await res.json();
 
         setItems(data);
+        setIsLoading(false)
     }
     const pushData = async (obj) => {
         const res = await fetch('https://612a905922bb490017893971.mockapi.io/cart', {
@@ -40,29 +43,38 @@ const App = () => {
 
         setCartItems(data);
     }
-    const onAddToCart = (obj) => {
-        pushData(obj);
-        setCartItems(prev => [...prev, obj])
-    }
     const onChangeSearchInput = (e) => {
         setSearchValue(e.target.value)
     }
-    const onRemoveCart =  async  (id) => {
+    const onRemoveCart = async (id) => {
         const res = await fetch(`https://612a905922bb490017893971.mockapi.io/cart/${id}`, {
             method: 'DELETE',
         });
         setCartItems(prev => prev.filter((el) => el.id !== id))
     }
 
+    const onAddToCart = async (obj) => {
+        const res = await fetch(`https://612a905922bb490017893971.mockapi.io/cart/${obj.id}`, {
+            method: 'DELETE',
+        });
+        if (cartItems.find(item => Number(item.id) === Number(obj.id))) {
+
+            setCartItems(prev => prev.filter(item => Number(item.id) !== Number(obj.id)))
+        }
+        else{
+            pushData(obj);
+            setCartItems(prev => [...prev, obj])
+        }
+    }
 
     const onFavourite = async (obj) => {
-        try{
-            if(favourites.find(favObj => favObj.id === obj.id)){
+        try {
+            if (favourites.find(favObj => favObj.id === obj.id)) {
                 const res = await fetch(`https://612a905922bb490017893971.mockapi.io/favourite/${obj.id}`, {
                     method: 'DELETE',
                 });
                 setFavourites(prev => prev.filter((el) => el.id !== obj.id))
-            }else{
+            } else {
                 const res = await fetch('https://612a905922bb490017893971.mockapi.io/favourite', {
                     method: 'POST',
                     headers: {"Content-type": "application/json"},
@@ -70,7 +82,7 @@ const App = () => {
                 })
                 setFavourites(prev => [...prev, obj])
             }
-        }catch (err){
+        } catch (err) {
             console.log(err.message())
         }
     }
@@ -83,22 +95,24 @@ const App = () => {
 
 
     return (
-            <div className="wrapper clear">
-                {cartOpened && <Drawer
-                    onRemove={onRemoveCart}
-                    cartItems={cartItems}
-                    onCloseCart={() => setCartOpened(false)}
-                />}
-                <Header onClickCart={() => setCartOpened(true)}/>
+        <div className="wrapper clear">
+            {cartOpened && <Drawer
+                onRemove={onRemoveCart}
+                cartItems={cartItems}
+                onCloseCart={() => setCartOpened(false)}
+            />}
+            <Header onClickCart={() => setCartOpened(true)}/>
             <Switch>
                 <Route exact path='/'>
                     <Home
+                        cartItems={cartItems}
                         searchValue={searchValue}
-                    setSearchValue={setSearchValue}
-                    onChangeSearchInput={onChangeSearchInput}
-                    items={items}
-                    onAddToCart={onAddToCart}
-                    onFavourite={onFavourite}
+                        setSearchValue={setSearchValue}
+                        onChangeSearchInput={onChangeSearchInput}
+                        items={items}
+                        onAddToCart={onAddToCart}
+                        onFavourite={onFavourite}
+                        isLoading={isLoading}
                     />
                 </Route>
                 <Route exact path='/favourite'>
@@ -107,9 +121,9 @@ const App = () => {
                         onFavourite={onFavourite}
                     />
                 </Route>
-                <Route path='*' component={Error} />
+                <Route path='*' component={Error}/>
             </Switch>
-            </div>
+        </div>
     )
 }
 

@@ -10,7 +10,7 @@ const Drawer = ({onCloseCart, cartItems, onRemove}) => {
                 </h2>
                 <div className="items">
                     {cartItems.length > 0 ? cartItems.map((el) => (
-                        <div className="cart-item d-flex align-center mb-20">
+                        <div key={el.id} className="cart-item d-flex align-center mb-20">
                             <img className='sm-img mr-20' src={el.imageURL} alt="#"/>
                             <div className='mr-20'>
                                 <p className='mb-5'>{el.name}</p>
