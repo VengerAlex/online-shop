@@ -1,1 +1,1 @@
-# online-shop with MOCK-APi
+# online-shop with MOCK-API
