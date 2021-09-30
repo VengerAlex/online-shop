@@ -58,7 +58,6 @@ const App = () => {
             method: 'DELETE',
         });
         if (cartItems.find(item => Number(item.id) === Number(obj.id))) {
-
             setCartItems(prev => prev.filter(item => Number(item.id) !== Number(obj.id)))
         } else {
             pushData(obj);
@@ -67,11 +66,11 @@ const App = () => {
     }
     const onFavourite = async (obj) => {
         try {
-            if (favourites.find(favObj => favObj.id === obj.id)) {
+            if (favourites.find(favObj => Number(favObj.id) === Number(obj.id))) {
                 const res = await fetch(`https://612a905922bb490017893971.mockapi.io/favourite/${obj.id}`, {
                     method: 'DELETE',
                 });
-                setFavourites(prev => prev.filter((el) => el.id !== obj.id))
+                setFavourites(prev => prev.filter(item => Number(item.id) !== Number(obj.id)))
             } else {
                 const res = await fetch('https://612a905922bb490017893971.mockapi.io/favourite', {
                     method: 'POST',
@@ -95,7 +94,7 @@ const App = () => {
     }
 
     return (
-        <AppContext.Provider value={{items, cartItems, favourites, isItemAdded}}>
+        <AppContext.Provider value={{items, cartItems, favourites, isItemAdded, setCartOpened, setCartItems}}>
 
             <div className="wrapper clear">
                 {cartOpened && <Drawer

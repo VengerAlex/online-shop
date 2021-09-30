@@ -6,7 +6,6 @@ import AppContext from "../../context";
 
 const Card = ({isLoading, id, price, imageURL, name, onPlus, onFavourite, favorited = false, added = false}) => {
     const {isItemAdded} = useContext(AppContext)
-    // const [isAdded, setIsAdded] = useState(added);
     const [isFavourite, setIsFavourite] = useState(favorited);
 
     const onClickPlus = () => {
