@@ -6,6 +6,7 @@ import React, {createContext, useEffect, useState} from "react";
 import Drawer from "./components/Drawer/Drawer";
 import Header from "./components/Header/Header";
 import AppContext from "./context";
+import Orders from "./pages/Orders";
 
 const App = () => {
     const [cartOpened, setCartOpened] = useState(false);
@@ -94,7 +95,7 @@ const App = () => {
     }
 
     return (
-        <AppContext.Provider value={{items, cartItems, favourites, isItemAdded, setCartOpened, setCartItems}}>
+        <AppContext.Provider value={{onFavourite, items, cartItems, favourites, isItemAdded, setCartOpened, setCartItems, onAddToCart}}>
 
             <div className="wrapper clear">
                 {cartOpened && <Drawer
@@ -111,7 +112,6 @@ const App = () => {
                             setSearchValue={setSearchValue}
                             onChangeSearchInput={onChangeSearchInput}
                             items={items}
-                            onAddToCart={onAddToCart}
                             onFavourite={onFavourite}
                             isLoading={isLoading}
                         />
@@ -120,6 +120,9 @@ const App = () => {
                         <Favourite
                             onFavourite={onFavourite}
                         />
+                    </Route>
+                    <Route exact path='/orders' >
+                        <Orders />
                     </Route>
                     <Route path='*' component={Error}/>
                 </Switch>

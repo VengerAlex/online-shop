@@ -48,16 +48,17 @@ const Card = ({isLoading, id, price, imageURL, name, onPlus, onFavourite, favori
                                 <b>{price}$</b>
                             </div>
                             <div className='d-flex'>
-                                <img
+                                {onPlus && <img
                                     onClick={onClickFavourite}
                                     className='mr-10 fav'
                                     src={`/img/${isFavourite ? 'fav-after.svg' : 'fav-before.svg'}`}
                                     alt="#"
-                                />
-                                <button className='card__btn'>
-                                    <img onClick={onClickPlus} src={`/img/${isItemAdded(id) ? 'btn-checked' : 'add'}.svg`}
+                                />}
+                                {onPlus && <button className='card__btn'>
+                                    <img onClick={onClickPlus}
+                                         src={`/img/${isItemAdded(id) ? 'btn-checked' : 'add'}.svg`}
                                          alt="#"/>
-                                </button>
+                                </button>}
                             </div>
                         </div>
                     </>

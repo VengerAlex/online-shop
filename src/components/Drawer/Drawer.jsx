@@ -1,16 +1,16 @@
 import React, {useContext, useState} from 'react';
 import Info from "../Info";
 import AppContext from "../../context";
+import {useCart} from "../hooks/useCart";
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
-const Drawer = ({onCloseCart, cartItems, onRemove}) => {
+const Drawer = ({onCloseCart, onRemove}) => {
 
-    const {setCartItems} = useContext(AppContext)
+    const {cartItems, setCartItems, totalPrice} = useCart();
     const [isOrderCompleted, setIsOrderCompleted ] = useState(false)
     const [orderId, setOrderId ] = useState(null)
 
-    const totalPrice = cartItems.reduce((sum, obj) => obj.price + sum, 0)
 
     const onClickOrder = async () => {
         const {data} = await fetch('https://612a905922bb490017893971.mockapi.io/orders',{
