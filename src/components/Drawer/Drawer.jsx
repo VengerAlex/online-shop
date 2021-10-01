@@ -5,10 +5,12 @@ import AppContext from "../../context";
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
 const Drawer = ({onCloseCart, cartItems, onRemove}) => {
+
     const {setCartItems} = useContext(AppContext)
     const [isOrderCompleted, setIsOrderCompleted ] = useState(false)
     const [orderId, setOrderId ] = useState(null)
 
+    const totalPrice = cartItems.reduce((sum, obj) => obj.price + sum, 0)
 
     const onClickOrder = async () => {
         const {data} = await fetch('https://612a905922bb490017893971.mockapi.io/orders',{
@@ -18,7 +20,7 @@ const Drawer = ({onCloseCart, cartItems, onRemove}) => {
                 items: cartItems
             })
         })
-        console.log(data)
+
         try{
             setIsOrderCompleted(true)
             setCartItems([])
@@ -69,12 +71,12 @@ const Drawer = ({onCloseCart, cartItems, onRemove}) => {
                         <li>
                             <span>Summ:</span>
                             <div></div>
-                            <b>2313$</b>
+                            <b>{totalPrice}$</b>
                         </li>
                         <li>
-                            <span>Taxes 4%:</span>
-                            <div></div>
-                            <b>313$</b>
+                            <span></span>
+                            <div>Taxes  4%</div>
+                            <b>{totalPrice / 100 * 4}$</b>
                         </li>
                     </ul>
                     <button onClick={onClickOrder} className='drawer-btn'>Place an order
